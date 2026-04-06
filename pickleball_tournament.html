@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HI Pickleball Premier League</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500&family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green:     #1A4D2E;
+      --green-mid: #2A6B40;
+      --green-lt:  #E6F0EA;
+      --green-xs:  #F0F7F2;
+      --cream:     #F5F4E8;
+      --cream2:    #EDECD8;
+      --white:     #FFFFFF;
+      --text:      #1A1A1A;
+      --muted:     #6B7A6B;
+      --border:    #D0DDD4;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--cream); color: var(--text); font-family: 'Barlow', sans-serif; line-height: 1.6; }
+
+    /* ── LOGO ─────────────────────────────── */
+    .logo-bar {
+      background: var(--cream);
+      display: flex; justify-content: center;
+      padding: 28px 20px 0;
+    }
+
+    /* ── HERO ─────────────────────────────── */
+    .hero {
+      background: var(--cream);
+      border-bottom: 2px solid var(--green);
+      padding: 24px 20px 44px;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      background: var(--green);
+      color: var(--cream);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 11px;
+      letter-spacing: 3px; text-transform: uppercase;
+      padding: 4px 16px; border-radius: 2px; margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2rem, 10vw, 6.5rem);
+      line-height: 0.95;
+      color: var(--green);
+      letter-spacing: -2px;
+      margin-bottom: 10px;
+    }
+    .hero h1 .sub {
+      display: block;
+      font-size: 0.3em;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: var(--green-mid);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .hero-meta {
+      display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+      margin-top: 20px;
+    }
+    .chip {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--white); border: 1.5px solid var(--border);
+      border-radius: 3px; padding: 7px 14px;
+      font-size: 0.85rem; font-weight: 600; color: var(--green);
+    }
+    .chip.dark { background: var(--green); color: var(--cream); border-color: var(--green); }
+
+    /* ── STAT BAR ─────────────────────────── */
+    .stat-bar {
+      background: var(--green); color: var(--cream);
+      padding: 20px; display: flex; flex-wrap: wrap;
+      justify-content: center; gap: 32px;
+    }
+    .stat { text-align: center; }
+    .stat-val { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem; line-height: 1; }
+    .stat-lbl { font-size: 0.68rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(245,244,232,0.55); margin-top: 3px; }
+    .stat-sep { width: 1px; background: rgba(255,255,255,0.15); align-self: stretch; }
+
+    /* ── SECTIONS ─────────────────────────── */
+    section { padding: 52px 20px; max-width: 1060px; margin: 0 auto; }
+    hr.div { border: none; border-top: 1.5px solid var(--border); }
+    .sec-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--green-mid); margin-bottom: 6px; }
+    .sec-title { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 800; color: var(--green); letter-spacing: -1px; margin-bottom: 28px; line-height: 1; }
+
+    /* ── TEAMS ────────────────────────────── */
+    .teams-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+    .team-card {
+      background: var(--white); border: 1.5px solid var(--border);
+      border-radius: 4px; padding: 16px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .team-card:hover { border-color: var(--green); box-shadow: 0 4px 16px rgba(26,77,46,0.1); }
+    .team-card.tbd { opacity: 0.5; border-style: dashed; }
+    .pair-tag {
+      display: inline-block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 0.72rem;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 2px 8px; border-radius: 2px; margin-bottom: 12px;
+    }
+    .tag-a { background: var(--green); color: var(--cream); }
+    .tag-b { background: var(--green-lt); color: var(--green); }
+    .p-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 6px 0; border-bottom: 1px solid var(--border);
+    }
+    .p-row:last-of-type { border-bottom: none; }
+    .av {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; font-weight: 800; flex-shrink: 0;
+      background: var(--green-lt); color: var(--green);
+    }
+    .av-a { background: var(--green); color: var(--cream); }
+    .p-name { font-weight: 600; font-size: 0.83rem; }
+
+    /* ── GROUPS ───────────────────────────── */
+    .groups-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media(max-width:600px) { .groups-grid { grid-template-columns: 1fr; } }
+    .group-box { background: var(--white); border: 1.5px solid var(--border); border-radius: 4px; overflow: hidden; }
+    .group-head { padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1.5px solid var(--border); }
+    .group-head.ga { background: var(--green); }
+    .group-head.gb { background: var(--green-lt); }
+    .group-head h3 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; }
+    .group-head.ga h3 { color: var(--cream); }
+    .group-head.gb h3 { color: var(--green); }
+    .court-pill { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 3px 10px; border-radius: 2px; }
+    .court-pill.ca { background: rgba(245,244,232,0.2); color: var(--cream); }
+    .court-pill.cb { background: var(--white); color: var(--green); }
+    .group-body { padding: 12px; }
+    .g-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 3px; margin-bottom: 6px; background: var(--cream); border: 1px solid var(--border); }
+    .g-num { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 0.8rem; width: 24px; text-align: center; color: var(--green); }
+    .g-names { flex: 1; font-size: 0.82rem; font-weight: 600; color: var(--text); }
+    .g-names .amp { color: var(--muted); font-weight: 400; margin: 0 3px; }
+
+    /* ── FIXTURES ─────────────────────────── */
+    .fix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media(max-width:680px) { .fix-grid { grid-template-columns: 1fr; } }
+    .fix-box { background: var(--white); border: 1.5px solid var(--border); border-radius: 4px; overflow: hidden; }
+    .fix-head { padding: 12px 18px; border-bottom: 1.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .fix-head h3 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.95rem; color: var(--green); }
+    .fix-sub { font-size: 0.72rem; color: var(--muted); font-weight: 600; }
+    .match-list { padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+    .match-row { display: flex; align-items: center; gap: 8px; background: var(--cream); border: 1px solid var(--border); border-radius: 3px; padding: 8px 12px; }
+    .m-num { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.72rem; color: var(--muted); min-width: 22px; }
+    .m-teams { flex: 1; font-size: 0.8rem; font-weight: 600; }
+    .m-teams .vs { color: var(--muted); font-weight: 400; margin: 0 5px; }
+
+    /* ── TIMELINE ─────────────────────────── */
+    .timeline { display: flex; flex-direction: column; margin-bottom: 40px; }
+    .tl-row { display: flex; }
+    .tl-left { width: 80px; text-align: right; padding-right: 16px; flex-shrink: 0; padding-top: 14px; }
+    .tl-time { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.85rem; color: var(--green); }
+    .tl-mid { display: flex; flex-direction: column; align-items: center; width: 20px; flex-shrink: 0; }
+    .tl-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green); margin-top: 18px; flex-shrink: 0; }
+    .tl-line { flex: 1; width: 2px; background: var(--border); }
+    .tl-right { flex: 1; padding: 10px 0 10px 16px; }
+    .tl-right h4 { font-weight: 700; font-size: 0.9rem; margin-bottom: 2px; color: var(--green); }
+    .tl-right p { font-size: 0.78rem; color: var(--muted); }
+
+    /* ── KNOCKOUT ─────────────────────────── */
+    .ko-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px,1fr)); gap: 14px; margin-top: 28px; }
+    .ko-box { background: var(--white); border: 1.5px solid var(--border); border-radius: 4px; overflow: hidden; }
+    .ko-box.final { border-color: var(--green); }
+    .ko-head { padding: 10px 14px; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; }
+    .ko-head.sf1 { background: var(--green); color: var(--cream); }
+    .ko-head.sf2 { background: var(--green-lt); color: var(--green); }
+    .ko-head.trd { background: var(--cream2); color: var(--green); }
+    .ko-head.fin { background: var(--green); color: var(--cream); }
+    .ko-body { padding: 12px 14px; font-size: 0.82rem; }
+    .ko-t { padding: 4px 0; font-weight: 600; border-bottom: 1px solid var(--border); }
+    .ko-t:last-of-type { border-bottom: none; }
+    .ko-vs { color: var(--muted); font-size: 0.72rem; }
+    .ko-note { margin-top: 8px; font-size: 0.7rem; color: var(--muted); }
+
+    /* ── RULES ────────────────────────────── */
+    .rules-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 16px; }
+    .rule-box { background: var(--white); border: 1.5px solid var(--border); border-radius: 4px; padding: 20px; }
+    .rule-icon { font-size: 1.5rem; margin-bottom: 10px; }
+    .rule-box h3 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.95rem; color: var(--green); margin-bottom: 8px; }
+    .rule-box ul { padding-left: 16px; font-size: 0.82rem; color: #444; line-height: 1.85; }
+    .hl-rule { background: var(--green-xs); border: 1.5px solid var(--green-lt); border-left: 4px solid var(--green); border-radius: 4px; padding: 18px 22px; margin-bottom: 26px; display: flex; gap: 14px; }
+    .hl-rule .hi { font-size: 1.6rem; flex-shrink: 0; }
+    .hl-rule h3 { font-family: 'Syne', sans-serif; font-weight: 800; color: var(--green); font-size: 0.95rem; margin-bottom: 4px; }
+    .hl-rule p { font-size: 0.82rem; color: #444; }
+
+    /* ── FOOTER ───────────────────────────── */
+    footer { background: var(--green); color: rgba(245,244,232,0.7); text-align: center; padding: 32px 20px; font-size: 0.82rem; }
+    footer strong { color: var(--cream); }
+    .footer-logo { margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+
+<!-- LOGO BAR -->
+<div class="logo-bar">
+  <!-- Faithful recreation of the HUNGER INC. logo -->
+  <svg height="36" viewBox="0 0 520 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- H -->
+    <rect x="0" y="2" width="7" height="42" fill="#1A4D2E"/>
+    <rect x="0" y="20" width="28" height="7" fill="#1A4D2E"/>
+    <rect x="21" y="2" width="7" height="42" fill="#1A4D2E"/>
+    <!-- U -->
+    <rect x="37" y="2" width="7" height="35" fill="#1A4D2E"/>
+    <rect x="37" y="37" width="28" height="7" fill="#1A4D2E"/>
+    <rect x="58" y="2" width="7" height="35" fill="#1A4D2E"/>
+    <!-- N -->
+    <rect x="74" y="2" width="7" height="42" fill="#1A4D2E"/>
+    <polygon points="74,2 81,2 103,35 103,2 110,2 110,44 103,44 81,11 81,44 74,44" fill="#1A4D2E"/>
+    <!-- G -->
+    <path d="M120 23C120 10.8 128.5 2 140 2C149 2 156 7 158.5 14H151C149 10.5 145 8 140 8C132 8 127 14.5 127 23C127 31.5 132 38 140 38C146 38 150.5 34.5 152 29H143V23H159V30C157 39 149.5 44 140 44C128.5 44 120 35.2 120 23Z" fill="#1A4D2E"/>
+    <!-- E -->
+    <rect x="168" y="2" width="7" height="42" fill="#1A4D2E"/>
+    <rect x="168" y="2" width="28" height="7" fill="#1A4D2E"/>
+    <rect x="168" y="20" width="24" height="6" fill="#1A4D2E"/>
+    <rect x="168" y="37" width="28" height="7" fill="#1A4D2E"/>
+    <!-- R -->
+    <rect x="205" y="2" width="7" height="42" fill="#1A4D2E"/>
+    <path d="M205 2H222C229 2 234 7 234 15C234 21 230.5 25.5 225 27L235 44H227L217.5 28H212V44H205V2ZM212 8V22H221C225 22 227 19.5 227 15C227 10.5 225 8 221 8H212Z" fill="#1A4D2E"/>
+    <!-- space -->
+    <!-- I -->
+    <rect x="248" y="2" width="7" height="42" fill="#1A4D2E"/>
+    <!-- N -->
+    <rect x="264" y="2" width="7" height="42" fill="#1A4D2E"/>
+    <polygon points="264,2 271,2 293,35 293,2 300,2 300,44 293,44 271,11 271,44 264,44" fill="#1A4D2E"/>
+    <!-- C -->
+    <path d="M310 23C310 10.8 318.5 2 330 2C339 2 346 7.5 348.5 15H341C339 11 335.5 8 330 8C322 8 317 14.5 317 23C317 31.5 322 38 330 38C335.5 38 339 35 341 31H348.5C346 38.5 339 44 330 44C318.5 44 310 35.2 310 23Z" fill="#1A4D2E"/>
+    <!-- . -->
+    <rect x="357" y="37" width="7" height="7" fill="#1A4D2E"/>
+  </svg>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">🏓 Official Tournament Page</div>
+  <h1>
+    <span class="sub">HI presents</span>
+    Pickleball<br>Premier League
+  </h1>
+  <div class="hero-meta">
+    <div class="chip dark">📍 Ranibag Pickleball Court</div>
+    <div class="chip">📅 Thursday, 9 April 2026</div>
+    <div class="chip">⏰ 7:00 PM – 10:00 PM</div>
+    <div class="chip">👥 19 Players + 1 TBD</div>
+    <div class="chip">🎾 2 Courts</div>
+  </div>
+</div>
+
+<!-- STAT BAR -->
+<div class="stat-bar">
+  <div class="stat"><div class="stat-val">Round Robin</div><div class="stat-lbl">Format</div></div>
+  <div class="stat-sep"></div>
+  <div class="stat"><div class="stat-val">First to 15</div><div class="stat-lbl">Group Stage</div></div>
+  <div class="stat-sep"></div>
+  <div class="stat"><div class="stat-val">First to 21</div><div class="stat-lbl">Knockout</div></div>
+  <div class="stat-sep"></div>
+  <div class="stat"><div class="stat-val">Rally Point</div><div class="stat-lbl">Scoring Style</div></div>
+  <div class="stat-sep"></div>
+  <div class="stat"><div class="stat-val">10 Pairs</div><div class="stat-lbl">Fixed Doubles</div></div>
+</div>
+
+<hr class="div">
+
+<!-- TEAMS -->
+<section id="teams">
+  <div class="sec-label">The Pairs</div>
+  <div class="sec-title">10 Teams</div>
+  <div class="teams-grid">
+
+    <div class="team-card">
+      <span class="pair-tag tag-a">A1 · Group A</span>
+      <div class="p-row"><div class="av av-a">HG</div><div class="p-name">Hardik Golchha</div></div>
+      <div class="p-row"><div class="av">NA</div><div class="p-name">Nasir Ansari</div></div>
+    </div>
+
+    <div class="team-card">
+      <span class="pair-tag tag-a">A2 · Group A</span>
+      <div class="p-row"><div class="av av-a">MR</div><div class="p-name">Manisha Rajendran</div></div>
+      <div class="p-row"><div class="av">TG</div><div class="p-name">Tanmay Gaikwad</div></div>
+    </div>
+
+    <div class="team-card">
+      <span class="pair-tag tag-a">A3 · Group A</span>
+      <div class="p-row"><div class="av av-a">MB</div><div class="p-name">Malak Bhuta</div></div>
+      <div class="p-row"><div class="av">R</div><div class="p-name">Riya</div></div>
+    </div>
+
+    <div class="team-card">
+      <span class="pair-tag tag-a">A4 · Group A</span>
+      <div class="p-row"><div class="av av-a">AG</div><div class="p-name">Aman Gopal</div></div>
+      <div class="p-row"><div class="av">AS</div><div class="p-name">Abhishek Sreenivasan</div></div>
+    </div>
+
+    <div class="team-card">
+      <span class="pair-tag tag-a">A5 · Group A</span>
+      <div class="p-row"><div class="av av-a">JB</div><div class="p-name">Jamila Bhinderwala</div></div>
+      <div class="p-row"><div class="av">AA</div><div class="p-name">Alisha Andrade</div></div>
+    </div>
+
+    <div class="team-card">
+      <span class="pair-tag tag-b">B1 · Group B</span>
+      <div class="p-row"><div class="av av-a">AM</div><div class="p-name">Artham Mittal</div></div>
+      <div class="p-row"><div class="av">AK</div><div class="p-name">Akshay Gupta</div></div>
+    </div>
+
+    <div class="team-card">
+      <span class="pair-tag tag-b">B2 · Group B</span>
+      <div class="p-row"><div class="av av-a">AY</div><div class="p-name">Anushka Yewale</div></div>
+      <div class="p-row"><div class="av">DN</div><div class="p-name">Diksha Nair</div></div>
+    </div>
+
+    <div class="team-card">
+      <span class="pair-tag tag-b">B3 · Group B</span>
+      <div class="p-row"><div class="av av-a">SM</div><div class="p-name">Shambhavi Mone</div></div>
+      <div class="p-row"><div class="av">GS</div><div class="p-name">Gautmi Sudhakar</div></div>
+    </div>
+
+    <div class="team-card">
+      <span class="pair-tag tag-b">B4 · Group B</span>
+      <div class="p-row"><div class="av av-a">PA</div><div class="p-name">Pranay Arora</div></div>
+      <div class="p-row"><div class="av">JG</div><div class="p-name">Jash Gohil</div></div>
+    </div>
+
+    <!-- B5: Namita Mitla confirmed + 1 TBD -->
+    <div class="team-card">
+      <span class="pair-tag tag-b">B5 · Group B</span>
+      <div class="p-row"><div class="av av-a">NM</div><div class="p-name">Namita Mitla</div></div>
+      <div class="p-row"><div class="av" style="background:var(--border);color:var(--muted)">?</div><div class="p-name" style="color:var(--muted)">Incoming Player</div></div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- GROUPS -->
+<section id="groups">
+  <div class="sec-label">Group Stage</div>
+  <div class="sec-title">Groups</div>
+  <div class="groups-grid">
+    <div class="group-box">
+      <div class="group-head ga">
+        <h3>Group A</h3>
+        <span class="court-pill ca">Court 1</span>
+      </div>
+      <div class="group-body">
+        <div class="g-row"><span class="g-num">A1</span><div class="g-names">Hardik Golchha <span class="amp">&</span> Nasir Ansari</div></div>
+        <div class="g-row"><span class="g-num">A2</span><div class="g-names">Manisha Rajendran <span class="amp">&</span> Tanmay Gaikwad</div></div>
+        <div class="g-row"><span class="g-num">A3</span><div class="g-names">Malak Bhuta <span class="amp">&</span> Riya</div></div>
+        <div class="g-row"><span class="g-num">A4</span><div class="g-names">Aman Gopal <span class="amp">&</span> Abhishek Sreenivasan</div></div>
+        <div class="g-row"><span class="g-num">A5</span><div class="g-names">Jamila Bhinderwala <span class="amp">&</span> Alisha Andrade</div></div>
+      </div>
+    </div>
+    <div class="group-box">
+      <div class="group-head gb">
+        <h3>Group B</h3>
+        <span class="court-pill cb">Court 2</span>
+      </div>
+      <div class="group-body">
+        <div class="g-row"><span class="g-num">B1</span><div class="g-names">Artham Mittal <span class="amp">&</span> Akshay Gupta</div></div>
+        <div class="g-row"><span class="g-num">B2</span><div class="g-names">Anushka Yewale <span class="amp">&</span> Diksha Nair</div></div>
+        <div class="g-row"><span class="g-num">B3</span><div class="g-names">Shambhavi Mone <span class="amp">&</span> Gautmi Sudhakar</div></div>
+        <div class="g-row"><span class="g-num">B4</span><div class="g-names">Pranay Arora <span class="amp">&</span> Jash Gohil</div></div>
+        <div class="g-row" style="border-style:dashed;opacity:0.6;"><span class="g-num">B5</span><div class="g-names">Namita Mitla <span class="amp">&</span> <span style="color:var(--muted)">TBD</span></div></div>
+      </div>
+    </div>
+  </div>
+  <p style="margin-top:14px;font-size:0.8rem;color:var(--muted);">✦ Full round robin within each group — every pair plays every other pair once. Top 2 per group advance to knockouts.</p>
+</section>
+
+<hr class="div">
+
+<!-- FIXTURES -->
+<section id="fixtures">
+  <div class="sec-label">Thursday, 9 April · 7 PM</div>
+  <div class="sec-title">Fixtures &amp; Timeline</div>
+
+  <div class="timeline">
+    <div class="tl-row">
+      <div class="tl-left"><span class="tl-time">7:00</span></div>
+      <div class="tl-mid"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-right"><h4>Warmup + Rules Briefing</h4><p>Coaches lead a 10-min warmup. Rules explained. First rally at 7:10.</p></div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-left"><span class="tl-time">7:10</span></div>
+      <div class="tl-mid"><div class="tl-dot" style="background:var(--green-mid)"></div><div class="tl-line"></div></div>
+      <div class="tl-right"><h4>Group Stage Begins</h4><p>Court 1 → Group A &nbsp;|&nbsp; Court 2 → Group B &nbsp;·&nbsp; First to 15, rally point &nbsp;·&nbsp; 10 matches per group</p></div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-left"><span class="tl-time">8:30</span></div>
+      <div class="tl-mid"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-right"><h4>Group Stage Ends · Standings Locked</h4><p>10-min break. Scores tallied. Top 2 from each group advance.</p></div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-left"><span class="tl-time">8:40</span></div>
+      <div class="tl-mid"><div class="tl-dot" style="background:var(--green-mid)"></div><div class="tl-line"></div></div>
+      <div class="tl-right"><h4>Semifinals</h4><p>SF1 on Court 1 &nbsp;|&nbsp; SF2 on Court 2 &nbsp;·&nbsp; First to 21</p></div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-left"><span class="tl-time">9:10</span></div>
+      <div class="tl-mid"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-right"><h4>Final + 3rd Place Match</h4><p>Final on Court 2 &nbsp;|&nbsp; 3rd Place on Court 1 &nbsp;·&nbsp; First to 21</p></div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-left"><span class="tl-time">9:40</span></div>
+      <div class="tl-mid"><div class="tl-dot"></div></div>
+      <div class="tl-right"><h4>🏆 Champions Crowned</h4><p>~20 min buffer for casual rallies. Done by 10:00 PM.</p></div>
+    </div>
+  </div>
+
+  <div class="fix-grid">
+    <div class="fix-box">
+      <div class="fix-head"><h3>Group A Fixtures</h3><span class="fix-sub">Court 1 · First to 15</span></div>
+      <div class="match-list">
+        <div class="match-row"><span class="m-num">M1</span><div class="m-teams">Hardik &amp; Nasir <span class="vs">vs</span> Manisha &amp; Tanmay</div></div>
+        <div class="match-row"><span class="m-num">M2</span><div class="m-teams">Malak &amp; Riya <span class="vs">vs</span> Aman &amp; Abhishek</div></div>
+        <div class="match-row"><span class="m-num">M3</span><div class="m-teams">Jamila &amp; Alisha <span class="vs">vs</span> Hardik &amp; Nasir</div></div>
+        <div class="match-row"><span class="m-num">M4</span><div class="m-teams">Manisha &amp; Tanmay <span class="vs">vs</span> Malak &amp; Riya</div></div>
+        <div class="match-row"><span class="m-num">M5</span><div class="m-teams">Aman &amp; Abhishek <span class="vs">vs</span> Jamila &amp; Alisha</div></div>
+        <div class="match-row"><span class="m-num">M6</span><div class="m-teams">Hardik &amp; Nasir <span class="vs">vs</span> Malak &amp; Riya</div></div>
+        <div class="match-row"><span class="m-num">M7</span><div class="m-teams">Manisha &amp; Tanmay <span class="vs">vs</span> Aman &amp; Abhishek</div></div>
+        <div class="match-row"><span class="m-num">M8</span><div class="m-teams">Jamila &amp; Alisha <span class="vs">vs</span> Malak &amp; Riya</div></div>
+        <div class="match-row"><span class="m-num">M9</span><div class="m-teams">Hardik &amp; Nasir <span class="vs">vs</span> Aman &amp; Abhishek</div></div>
+        <div class="match-row"><span class="m-num">M10</span><div class="m-teams">Manisha &amp; Tanmay <span class="vs">vs</span> Jamila &amp; Alisha</div></div>
+      </div>
+    </div>
+    <div class="fix-box">
+      <div class="fix-head"><h3>Group B Fixtures</h3><span class="fix-sub">Court 2 · First to 15</span></div>
+      <div class="match-list">
+        <div class="match-row"><span class="m-num">M1</span><div class="m-teams">Artham &amp; Akshay <span class="vs">vs</span> Anushka &amp; Diksha</div></div>
+        <div class="match-row"><span class="m-num">M2</span><div class="m-teams">Shambhavi &amp; Gautmi <span class="vs">vs</span> Pranay &amp; Jash</div></div>
+        <div class="match-row"><span class="m-num">M3</span><div class="m-teams">Namita &amp; TBD <span class="vs">vs</span> Artham &amp; Akshay</div></div>
+        <div class="match-row"><span class="m-num">M4</span><div class="m-teams">Anushka &amp; Diksha <span class="vs">vs</span> Shambhavi &amp; Gautmi</div></div>
+        <div class="match-row"><span class="m-num">M5</span><div class="m-teams">Pranay &amp; Jash <span class="vs">vs</span> Namita &amp; TBD</div></div>
+        <div class="match-row"><span class="m-num">M6</span><div class="m-teams">Artham &amp; Akshay <span class="vs">vs</span> Shambhavi &amp; Gautmi</div></div>
+        <div class="match-row"><span class="m-num">M7</span><div class="m-teams">Anushka &amp; Diksha <span class="vs">vs</span> Pranay &amp; Jash</div></div>
+        <div class="match-row"><span class="m-num">M8</span><div class="m-teams">Namita &amp; TBD <span class="vs">vs</span> Shambhavi &amp; Gautmi</div></div>
+        <div class="match-row"><span class="m-num">M9</span><div class="m-teams">Artham &amp; Akshay <span class="vs">vs</span> Pranay &amp; Jash</div></div>
+        <div class="match-row"><span class="m-num">M10</span><div class="m-teams">Anushka &amp; Diksha <span class="vs">vs</span> Namita &amp; TBD</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-label" style="margin-top:44px">Knockout Stage · First to 21</div>
+  <p style="font-size:0.82rem;color:var(--muted);margin-top:4px;margin-bottom:4px;">Cross-group matchups — Group A 1st vs Group B 2nd, and vice versa.</p>
+  <div class="ko-grid">
+    <div class="ko-box"><div class="ko-head sf1">Semifinal 1 · Court 1</div><div class="ko-body"><div class="ko-t">🥇 Group A — 1st Place</div><div class="ko-vs">vs</div><div class="ko-t">🥈 Group B — 2nd Place</div><div class="ko-note">8:40 PM · ~30 min</div></div></div>
+    <div class="ko-box"><div class="ko-head sf2">Semifinal 2 · Court 2</div><div class="ko-body"><div class="ko-t">🥇 Group B — 1st Place</div><div class="ko-vs">vs</div><div class="ko-t">🥈 Group A — 2nd Place</div><div class="ko-note">8:40 PM · ~30 min</div></div></div>
+    <div class="ko-box"><div class="ko-head trd">3rd Place · Court 1</div><div class="ko-body"><div class="ko-t">SF1 Loser</div><div class="ko-vs">vs</div><div class="ko-t">SF2 Loser</div><div class="ko-note">9:10 PM · ~30 min</div></div></div>
+    <div class="ko-box final"><div class="ko-head fin">🏆 The Final · Court 2</div><div class="ko-body"><div class="ko-t">SF1 Winner</div><div class="ko-vs">vs</div><div class="ko-t">SF2 Winner</div><div class="ko-note">9:10 PM · Champions crowned 🎉</div></div></div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- RULES -->
+<section id="rules">
+  <div class="sec-label">How We Play</div>
+  <div class="sec-title">Rules</div>
+  <div class="hl-rule">
+    <div class="hi">🏸</div>
+    <div>
+      <h3>Badminton-Style Scoring on a Pickleball Court</h3>
+      <p>Every rally wins a point — no side-out scoring. Group stage is <strong>first to 15</strong> (fast and fun). Knockout is <strong>first to 21</strong> (higher stakes). Win by 2. All standard pickleball court rules apply.</p>
+    </div>
+  </div>
+  <div class="rules-grid">
+    <div class="rule-box"><div class="rule-icon">🔢</div><h3>Scoring</h3><ul><li>Rally point — every rally earns a point</li><li>Group stage: first to <strong>15</strong></li><li>Knockout: first to <strong>21</strong></li><li>Must win by 2 clear points</li><li>Single game per group stage match</li></ul></div>
+    <div class="rule-box"><div class="rule-icon">🏓</div><h3>Serving</h3><ul><li>Underhand serve, paddle below wrist</li><li>Hit ball below the waist</li><li>Serve diagonally into opposite box</li><li>Must clear the kitchen (NVZ)</li><li>One serve attempt — no lets</li></ul></div>
+    <div class="rule-box"><div class="rule-icon">🍳</div><h3>The Kitchen Rule</h3><ul><li>Non-Volley Zone = 7 ft either side of net</li><li>No volleying while in the kitchen</li><li>May enter the kitchen to play a bounced ball</li><li>Momentum into kitchen after volley = fault</li></ul></div>
+    <div class="rule-box"><div class="rule-icon">⬇️</div><h3>Double Bounce Rule</h3><ul><li>Return of serve must bounce before being hit</li><li>Serving team must also let the return bounce</li><li>After that, both teams may volley freely</li></ul></div>
+    <div class="rule-box"><div class="rule-icon">🚫</div><h3>Faults</h3><ul><li>Ball lands out of bounds</li><li>Ball hits the net</li><li>Volleying in the kitchen</li><li>Breaking the double bounce rule</li><li>Player or paddle touches the net</li></ul></div>
+    <div class="rule-box"><div class="rule-icon">🤝</div><h3>Spirit of the Game</h3><ul><li>Call your own faults honestly</li><li>When in doubt — replay the rally</li><li>Experienced players: help your team!</li><li>Everyone's here to have fun 🥒</li></ul></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <svg height="22" viewBox="0 0 520 46" fill="none" xmlns="http://www.w3.org/2000/svg" opacity="0.8">
+      <rect x="0" y="2" width="7" height="42" fill="#F5F4E8"/><rect x="0" y="20" width="28" height="7" fill="#F5F4E8"/><rect x="21" y="2" width="7" height="42" fill="#F5F4E8"/>
+      <rect x="37" y="2" width="7" height="35" fill="#F5F4E8"/><rect x="37" y="37" width="28" height="7" fill="#F5F4E8"/><rect x="58" y="2" width="7" height="35" fill="#F5F4E8"/>
+      <rect x="74" y="2" width="7" height="42" fill="#F5F4E8"/><polygon points="74,2 81,2 103,35 103,2 110,2 110,44 103,44 81,11 81,44 74,44" fill="#F5F4E8"/>
+      <path d="M120 23C120 10.8 128.5 2 140 2C149 2 156 7 158.5 14H151C149 10.5 145 8 140 8C132 8 127 14.5 127 23C127 31.5 132 38 140 38C146 38 150.5 34.5 152 29H143V23H159V30C157 39 149.5 44 140 44C128.5 44 120 35.2 120 23Z" fill="#F5F4E8"/>
+      <rect x="168" y="2" width="7" height="42" fill="#F5F4E8"/><rect x="168" y="2" width="28" height="7" fill="#F5F4E8"/><rect x="168" y="20" width="24" height="6" fill="#F5F4E8"/><rect x="168" y="37" width="28" height="7" fill="#F5F4E8"/>
+      <path d="M205 2H222C229 2 234 7 234 15C234 21 230.5 25.5 225 27L235 44H227L217.5 28H212V44H205V2ZM212 8V22H221C225 22 227 19.5 227 15C227 10.5 225 8 221 8H212Z" fill="#F5F4E8"/>
+      <rect x="248" y="2" width="7" height="42" fill="#F5F4E8"/>
+      <rect x="264" y="2" width="7" height="42" fill="#F5F4E8"/><polygon points="264,2 271,2 293,35 293,2 300,2 300,44 293,44 271,11 271,44 264,44" fill="#F5F4E8"/>
+      <path d="M310 23C310 10.8 318.5 2 330 2C339 2 346 7.5 348.5 15H341C339 11 335.5 8 330 8C322 8 317 14.5 317 23C317 31.5 322 38 330 38C335.5 38 339 35 341 31H348.5C346 38.5 339 44 330 44C318.5 44 310 35.2 310 23Z" fill="#F5F4E8"/>
+      <rect x="357" y="37" width="7" height="7" fill="#F5F4E8"/>
+    </svg>
+  </div>
+  <p style="margin-bottom:5px;"><strong>HI Pickleball Premier League</strong> &nbsp;·&nbsp; Thursday, 9 April 2026</p>
+  <p>Ranibag Pickleball Court &nbsp;·&nbsp; 7:00 PM – 10:00 PM</p>
+  <p style="margin-top:10px;font-size:0.74rem;">See you on the court. 🏓</p>
+</footer>
+
+</body>
+</html>
