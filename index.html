@@ -218,7 +218,7 @@
     <div class="chip dark">📍 Ranibag Pickleball Court</div>
     <div class="chip">📅 Thursday, 9 April 2026</div>
     <div class="chip">⏰ 7:00 PM – 10:00 PM</div>
-    <div class="chip">👥 19 Players + 1 TBD</div>
+    <div class="chip">👥 20 Players</div>
     <div class="chip">🎾 2 Courts</div>
   </div>
 </div>
@@ -302,7 +302,7 @@
     <div class="team-card">
       <span class="pair-tag tag-b">B5 · Group B</span>
       <div class="p-row"><div class="av av-a">NM</div><div class="p-name">Namita Mitla</div></div>
-      <div class="p-row"><div class="av" style="background:var(--border);color:var(--muted)">?</div><div class="p-name" style="color:var(--muted)">Incoming Player</div></div>
+      <div class="p-row"><div class="av">KP</div><div class="p-name">Khushi Parikh</div></div>
     </div>
 
   </div>
@@ -338,7 +338,7 @@
         <div class="g-row"><span class="g-num">B2</span><div class="g-names">Anushka Yewale <span class="amp">&</span> Diksha Nair</div></div>
         <div class="g-row"><span class="g-num">B3</span><div class="g-names">Shambhavi Mone <span class="amp">&</span> Gautmi Sudhakar</div></div>
         <div class="g-row"><span class="g-num">B4</span><div class="g-names">Pranay Arora <span class="amp">&</span> Jash Gohil</div></div>
-        <div class="g-row" style="border-style:dashed;opacity:0.6;"><span class="g-num">B5</span><div class="g-names">Namita Mitla <span class="amp">&</span> <span style="color:var(--muted)">TBD</span></div></div>
+        <div class="g-row"><span class="g-num">B5</span><div class="g-names">Namita Mitla <span class="amp">&</span> Khushi Parikh</div></div>
       </div>
     </div>
   </div>
@@ -406,14 +406,14 @@
       <div class="match-list">
         <div class="match-row"><span class="m-num">M1</span><div class="m-teams">Artham &amp; Akshay <span class="vs">vs</span> Anushka &amp; Diksha</div></div>
         <div class="match-row"><span class="m-num">M2</span><div class="m-teams">Shambhavi &amp; Gautmi <span class="vs">vs</span> Pranay &amp; Jash</div></div>
-        <div class="match-row"><span class="m-num">M3</span><div class="m-teams">Namita &amp; TBD <span class="vs">vs</span> Artham &amp; Akshay</div></div>
+        <div class="match-row"><span class="m-num">M3</span><div class="m-teams">Namita &amp; Khushi <span class="vs">vs</span> Artham &amp; Akshay</div></div>
         <div class="match-row"><span class="m-num">M4</span><div class="m-teams">Anushka &amp; Diksha <span class="vs">vs</span> Shambhavi &amp; Gautmi</div></div>
-        <div class="match-row"><span class="m-num">M5</span><div class="m-teams">Pranay &amp; Jash <span class="vs">vs</span> Namita &amp; TBD</div></div>
+        <div class="match-row"><span class="m-num">M5</span><div class="m-teams">Pranay &amp; Jash <span class="vs">vs</span> Namita &amp; Khushi</div></div>
         <div class="match-row"><span class="m-num">M6</span><div class="m-teams">Artham &amp; Akshay <span class="vs">vs</span> Shambhavi &amp; Gautmi</div></div>
         <div class="match-row"><span class="m-num">M7</span><div class="m-teams">Anushka &amp; Diksha <span class="vs">vs</span> Pranay &amp; Jash</div></div>
-        <div class="match-row"><span class="m-num">M8</span><div class="m-teams">Namita &amp; TBD <span class="vs">vs</span> Shambhavi &amp; Gautmi</div></div>
+        <div class="match-row"><span class="m-num">M8</span><div class="m-teams">Namita &amp; Khushi <span class="vs">vs</span> Shambhavi &amp; Gautmi</div></div>
         <div class="match-row"><span class="m-num">M9</span><div class="m-teams">Artham &amp; Akshay <span class="vs">vs</span> Pranay &amp; Jash</div></div>
-        <div class="match-row"><span class="m-num">M10</span><div class="m-teams">Anushka &amp; Diksha <span class="vs">vs</span> Namita &amp; TBD</div></div>
+        <div class="match-row"><span class="m-num">M10</span><div class="m-teams">Anushka &amp; Diksha <span class="vs">vs</span> Namita &amp; Khushi</div></div>
       </div>
     </div>
   </div>
@@ -471,6 +471,517 @@
   <p>Ranibag Pickleball Court &nbsp;·&nbsp; 7:00 PM – 10:00 PM</p>
   <p style="margin-top:10px;font-size:0.74rem;">See you on the court. 🏓</p>
 </footer>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     RESULTS MANAGER
+════════════════════════════════════════════════════════════ -->
+
+<!-- Floating Button -->
+<button id="rm-fab" onclick="document.getElementById('rm-overlay').style.display='flex'" title="Manage Results">
+  🏆 Results
+</button>
+
+<!-- Overlay Panel -->
+<div id="rm-overlay" style="display:none">
+  <div id="rm-panel">
+    <div id="rm-header">
+      <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;">Results Manager</span>
+      <button id="rm-close" onclick="document.getElementById('rm-overlay').style.display='none'">✕</button>
+    </div>
+
+    <!-- Tabs -->
+    <div id="rm-tabs">
+      <button class="rm-tab active" onclick="rmTab(this,'group')">Group Results</button>
+      <button class="rm-tab" onclick="rmTab(this,'standings')">Standings</button>
+      <button class="rm-tab" onclick="rmTab(this,'knockout')">Knockout</button>
+      <button class="rm-tab" onclick="rmTab(this,'leaderboard')">🏆 Leaderboard</button>
+    </div>
+
+    <!-- TAB: Group Results -->
+    <div id="rm-group" class="rm-pane">
+      <div class="rm-groups-grid">
+        <div>
+          <div class="rm-group-title ga-title">Group A — Court 1</div>
+          <div id="matchlist-A"></div>
+        </div>
+        <div>
+          <div class="rm-group-title gb-title">Group B — Court 2</div>
+          <div id="matchlist-B"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: Standings -->
+    <div id="rm-standings" class="rm-pane" style="display:none">
+      <div class="rm-groups-grid">
+        <div>
+          <div class="rm-group-title ga-title">Group A Standings</div>
+          <div id="standings-A"></div>
+        </div>
+        <div>
+          <div class="rm-group-title gb-title">Group B Standings</div>
+          <div id="standings-B"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: Knockout -->
+    <div id="rm-knockout" class="rm-pane" style="display:none">
+      <div id="ko-content"></div>
+    </div>
+
+    <!-- TAB: Leaderboard -->
+    <div id="rm-leaderboard" class="rm-pane" style="display:none">
+      <div id="lb-content"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* ── FAB ── */
+#rm-fab {
+  position: fixed; bottom: 28px; right: 28px; z-index: 900;
+  background: var(--green); color: var(--cream);
+  border: none; border-radius: 32px; padding: 12px 22px;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1rem;
+  letter-spacing: 1px; cursor: pointer; box-shadow: 0 4px 20px rgba(26,77,46,0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+#rm-fab:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(26,77,46,0.5); }
+
+/* ── OVERLAY ── */
+#rm-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(26,77,46,0.55); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+}
+#rm-panel {
+  background: var(--cream); border-radius: 12px;
+  width: 100%; max-width: 900px; max-height: 90vh;
+  display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+}
+#rm-header {
+  background: var(--green); color: var(--cream);
+  padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+#rm-close {
+  background: none; border: none; color: var(--cream);
+  font-size: 1.2rem; cursor: pointer; padding: 2px 6px; border-radius: 4px;
+}
+#rm-close:hover { background: rgba(255,255,255,0.15); }
+
+/* ── TABS ── */
+#rm-tabs {
+  display: flex; background: var(--cream2); border-bottom: 2px solid var(--border);
+  flex-shrink: 0; overflow-x: auto;
+}
+.rm-tab {
+  padding: 11px 20px; border: none; background: none; cursor: pointer;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.9rem;
+  letter-spacing: 0.5px; color: var(--muted); white-space: nowrap;
+  border-bottom: 3px solid transparent; margin-bottom: -2px;
+}
+.rm-tab.active { color: var(--green); border-bottom-color: var(--green); }
+.rm-tab:hover:not(.active) { color: var(--text); }
+
+/* ── PANES ── */
+.rm-pane { padding: 20px; overflow-y: auto; flex: 1; }
+.rm-groups-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media(max-width:640px) { .rm-groups-grid { grid-template-columns: 1fr; } }
+
+.rm-group-title {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+  font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
+  padding: 8px 12px; border-radius: 4px 4px 0 0; margin-bottom: 8px;
+}
+.ga-title { background: var(--green); color: var(--cream); }
+.gb-title { background: var(--green-lt); color: var(--green); }
+
+/* ── MATCH ROWS ── */
+.rm-match {
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 6px; font-size: 0.78rem;
+}
+.rm-mnum {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+  color: var(--muted); font-size: 0.72rem; width: 26px; flex-shrink: 0; text-align: center;
+}
+.rm-team {
+  flex: 1; padding: 7px 10px; border: 1.5px solid var(--border);
+  border-radius: 4px; background: white; cursor: pointer;
+  font-weight: 600; text-align: center; transition: all 0.12s;
+  font-size: 0.75rem; line-height: 1.3;
+}
+.rm-team:hover { border-color: var(--green); }
+.rm-team.winner {
+  background: var(--green); color: white; border-color: var(--green);
+}
+.rm-team.loser {
+  background: #f5f5f0; color: var(--muted); border-color: var(--border);
+}
+.rm-vs {
+  font-size: 0.65rem; color: var(--muted); font-weight: 600;
+  flex-shrink: 0; width: 20px; text-align: center;
+}
+
+/* ── STANDINGS TABLE ── */
+.rm-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-top: 4px; }
+.rm-table th {
+  background: var(--green-lt); color: var(--green);
+  padding: 8px 10px; text-align: left; font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 0.72rem; letter-spacing: 1px;
+}
+.rm-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.rm-table tr:last-child td { border-bottom: none; }
+.rm-table tr.qualified td:first-child { font-weight: 700; color: var(--green); }
+.rm-table .rank-chip {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 0.75rem;
+}
+.rank-q { background: var(--green); color: white; }
+.rank-n { background: var(--border); color: var(--muted); }
+
+/* ── KNOCKOUT ── */
+.ko-section { margin-bottom: 24px; }
+.ko-label {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+  font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 10px;
+}
+.ko-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media(max-width:500px) { .ko-grid { grid-template-columns: 1fr; } }
+.ko-match {
+  border: 1.5px solid var(--border); border-radius: 6px; overflow: hidden;
+}
+.ko-match-title {
+  background: var(--green); color: var(--cream); padding: 6px 12px;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+  font-size: 0.75rem; letter-spacing: 1px;
+}
+.ko-teams { padding: 8px; display: flex; flex-direction: column; gap: 6px; }
+.ko-team {
+  padding: 8px 12px; border: 1.5px solid var(--border);
+  border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.78rem;
+  background: white; transition: all 0.12s; text-align: center;
+}
+.ko-team:hover:not(.ko-tbd) { border-color: var(--green); }
+.ko-team.winner { background: var(--green); color: white; border-color: var(--green); }
+.ko-team.loser { background: #f5f5f0; color: var(--muted); border-color: var(--border); }
+.ko-team.ko-tbd { color: var(--muted); font-style: italic; cursor: default; font-size: 0.72rem; }
+.ko-vs { text-align: center; font-size: 0.65rem; color: var(--muted); font-weight: 600; }
+
+/* ── LEADERBOARD ── */
+.podium { display: flex; align-items: flex-end; justify-content: center; gap: 12px; margin: 24px 0; }
+.podium-block {
+  text-align: center; background: white; border: 2px solid var(--border);
+  border-radius: 8px; padding: 16px 12px 12px; min-width: 100px;
+}
+.podium-block.p1 { border-color: #FFD700; background: #FFFBEA; min-width: 120px; }
+.podium-block.p2 { border-color: #C0C0C0; background: #F8F8F8; }
+.podium-block.p3 { border-color: #CD7F32; background: #FDF6EF; }
+.podium-medal { font-size: 2rem; display: block; margin-bottom: 6px; }
+.podium-name { font-weight: 700; font-size: 0.8rem; color: var(--text); line-height: 1.3; }
+.podium-place { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.7rem; color: var(--muted); margin-top: 4px; }
+.lb-note { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 20px; }
+</style>
+
+<script>
+(function() {
+
+// ─── DATA ───────────────────────────────────────────────
+const PAIRS = {
+  A1: "Hardik & Nasir",   A2: "Manisha & Tanmay",
+  A3: "Malak & Riya",     A4: "Aman & Abhishek",
+  A5: "Jamila & Alisha",
+  B1: "Artham & Akshay",  B2: "Anushka & Diksha",
+  B3: "Shambhavi & Gautmi", B4: "Pranay & Jash",
+  B5: "Namita & Khushi"
+};
+
+const MATCHES = {
+  A: [
+    {id:"AM1",t1:"A1",t2:"A2"}, {id:"AM2",t1:"A3",t2:"A4"},
+    {id:"AM3",t1:"A5",t2:"A1"}, {id:"AM4",t1:"A2",t2:"A3"},
+    {id:"AM5",t1:"A4",t2:"A5"}, {id:"AM6",t1:"A1",t2:"A3"},
+    {id:"AM7",t1:"A2",t2:"A4"}, {id:"AM8",t1:"A5",t2:"A3"},
+    {id:"AM9",t1:"A1",t2:"A4"}, {id:"AM10",t1:"A2",t2:"A5"}
+  ],
+  B: [
+    {id:"BM1",t1:"B1",t2:"B2"}, {id:"BM2",t1:"B3",t2:"B4"},
+    {id:"BM3",t1:"B5",t2:"B1"}, {id:"BM4",t1:"B2",t2:"B3"},
+    {id:"BM5",t1:"B4",t2:"B5"}, {id:"BM6",t1:"B1",t2:"B3"},
+    {id:"BM7",t1:"B2",t2:"B4"}, {id:"BM8",t1:"B5",t2:"B3"},
+    {id:"BM9",t1:"B1",t2:"B4"}, {id:"BM10",t1:"B2",t2:"B5"}
+  ]
+};
+
+// ─── STATE ──────────────────────────────────────────────
+let R = JSON.parse(localStorage.getItem('hipl_results') || '{}');
+// R = { matchId: winnerId }
+
+function save() { localStorage.setItem('hipl_results', JSON.stringify(R)); }
+
+// ─── TAB SWITCHING ──────────────────────────────────────
+window.rmTab = function(btn, pane) {
+  document.querySelectorAll('.rm-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.rm-pane').forEach(p => p.style.display = 'none');
+  document.getElementById('rm-' + pane).style.display = 'block';
+  if (pane === 'standings')   renderStandings();
+  if (pane === 'knockout')    renderKnockout();
+  if (pane === 'leaderboard') renderLeaderboard();
+};
+
+// ─── GROUP MATCHES ──────────────────────────────────────
+function renderGroupMatches(grp) {
+  const container = document.getElementById('matchlist-' + grp);
+  container.innerHTML = '';
+  MATCHES[grp].forEach((m, i) => {
+    const winner = R[m.id];
+    const row = document.createElement('div');
+    row.className = 'rm-match';
+    row.innerHTML = `
+      <span class="rm-mnum">M${i+1}</span>
+      <div class="rm-team ${winner===m.t1?'winner':winner?'loser':''}"
+           onclick="pickWinner('${m.id}','${m.t1}','${grp}')">${PAIRS[m.t1]}</div>
+      <span class="rm-vs">vs</span>
+      <div class="rm-team ${winner===m.t2?'winner':winner?'loser':''}"
+           onclick="pickWinner('${m.id}','${m.t2}','${grp}')">${PAIRS[m.t2]}</div>`;
+    container.appendChild(row);
+  });
+}
+
+window.pickWinner = function(matchId, teamId, grp) {
+  if (R[matchId] === teamId) { delete R[matchId]; }
+  else { R[matchId] = teamId; }
+  save();
+  renderGroupMatches(grp);
+};
+
+// ─── STANDINGS ──────────────────────────────────────────
+function calcStandings(grp) {
+  const keys = grp === 'A' ? ['A1','A2','A3','A4','A5'] : ['B1','B2','B3','B4','B5'];
+  const s = {};
+  keys.forEach(k => s[k] = {w:0, l:0, pts:0});
+  MATCHES[grp].forEach(m => {
+    const w = R[m.id];
+    if (!w) return;
+    const l = w === m.t1 ? m.t2 : m.t1;
+    s[w].w++; s[w].pts += 2; s[l].l++;
+  });
+  return keys
+    .map(k => ({id:k, ...s[k]}))
+    .sort((a,b) => b.pts-a.pts || b.w-a.w);
+}
+
+function renderStandings() {
+  ['A','B'].forEach(grp => {
+    const rows = calcStandings(grp);
+    const played = MATCHES[grp].filter(m => R[m.id]).length;
+    const el = document.getElementById('standings-' + grp);
+    el.innerHTML = `
+      <table class="rm-table">
+        <thead><tr><th>#</th><th>Pair</th><th>W</th><th>L</th><th>Pts</th></tr></thead>
+        <tbody>
+          ${rows.map((r,i) => `
+            <tr class="${i<2?'qualified':''}">
+              <td><span class="rank-chip ${i<2?'rank-q':'rank-n'}">${i+1}</span></td>
+              <td><strong>${PAIRS[r.id]}</strong><br><span style="font-size:0.7rem;color:var(--muted)">${r.id}</span></td>
+              <td>${r.w}</td><td>${r.l}</td>
+              <td><strong>${r.pts}</strong></td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+      <p style="font-size:0.72rem;color:var(--muted);margin-top:8px;text-align:right">
+        ${played}/10 matches played ${played===10?'✅':''}
+      </p>`;
+  });
+}
+
+// ─── KNOCKOUT ───────────────────────────────────────────
+const KO_MATCHES = [
+  {id:'SF1', label:'Semi-Final 1', t1key:'A1_id', t2key:'B2_id'},
+  {id:'SF2', label:'Semi-Final 2', t1key:'B1_id', t2key:'A2_id'},
+  {id:'F3',  label:'3rd Place',    t1key:'SF1L',  t2key:'SF2L'},
+  {id:'FIN', label:'🏆 Final',     t1key:'SF1W',  t2key:'SF2W'},
+];
+
+function getKOTeams() {
+  const aRows = calcStandings('A');
+  const bRows = calcStandings('B');
+  const aPlayed = MATCHES['A'].filter(m => R[m.id]).length;
+  const bPlayed = MATCHES['B'].filter(m => R[m.id]).length;
+  const ready = aPlayed === 10 && bPlayed === 10;
+
+  const t = {};
+  t['A1_id'] = ready ? aRows[0].id : null;
+  t['A2_id'] = ready ? aRows[1].id : null;
+  t['B1_id'] = ready ? bRows[0].id : null;
+  t['B2_id'] = ready ? bRows[1].id : null;
+
+  // SF results
+  const sf1w = R['SF1']; const sf1l = sf1w ? (sf1w === t['A1_id'] ? t['B2_id'] : t['A1_id']) : null;
+  const sf2w = R['SF2']; const sf2l = sf2w ? (sf2w === t['B1_id'] ? t['A2_id'] : t['B1_id']) : null;
+  t['SF1W'] = sf1w; t['SF1L'] = sf1l;
+  t['SF2W'] = sf2w; t['SF2L'] = sf2l;
+
+  return {t, ready};
+}
+
+function renderKnockout() {
+  const {t, ready} = getKOTeams();
+  const el = document.getElementById('ko-content');
+
+  if (!ready) {
+    el.innerHTML = `
+      <div class="ko-section">
+        <p style="color:var(--muted);font-size:0.85rem;padding:20px;text-align:center">
+          ⏳ Complete all group stage matches first to unlock the knockout bracket.
+        </p>
+      </div>
+      <div class="ko-section">
+        <div class="ko-label">Semi-Finals</div>
+        <div class="ko-grid">
+          ${renderKOMatch({id:'SF1',label:'Semi-Final 1'}, null, null)}
+          ${renderKOMatch({id:'SF2',label:'Semi-Final 2'}, null, null)}
+        </div>
+      </div>
+      <div class="ko-section">
+        <div class="ko-label">Finals</div>
+        <div class="ko-grid">
+          ${renderKOMatch({id:'F3',label:'3rd Place'}, null, null)}
+          ${renderKOMatch({id:'FIN',label:'🏆 Final'}, null, null)}
+        </div>
+      </div>`;
+    return;
+  }
+
+  const sf1t1 = t['A1_id'], sf1t2 = t['B2_id'];
+  const sf2t1 = t['B1_id'], sf2t2 = t['A2_id'];
+  const f3t1 = t['SF1L'], f3t2 = t['SF2L'];
+  const fint1 = t['SF1W'], fint2 = t['SF2W'];
+
+  el.innerHTML = `
+    <div class="ko-section">
+      <div class="ko-label">Semi-Finals (First to 21)</div>
+      <div class="ko-grid">
+        ${koMatchHTML('SF1','Semi-Final 1',sf1t1,sf1t2)}
+        ${koMatchHTML('SF2','Semi-Final 2',sf2t1,sf2t2)}
+      </div>
+    </div>
+    <div class="ko-section">
+      <div class="ko-label">Finals (First to 21)</div>
+      <div class="ko-grid">
+        ${koMatchHTML('F3','3rd Place',f3t1,f3t2)}
+        ${koMatchHTML('FIN','🏆 Final',fint1,fint2)}
+      </div>
+    </div>`;
+}
+
+function koMatchHTML(id, label, t1, t2) {
+  const w = R[id];
+  const t1cls = !t1?'ko-tbd':(w===t1?'winner':w?'loser':'');
+  const t2cls = !t2?'ko-tbd':(w===t2?'winner':w?'loser':'');
+  const t1name = t1 ? PAIRS[t1] : '—';
+  const t2name = t2 ? PAIRS[t2] : '—';
+  const t1click = t1 ? `onclick="pickKO('${id}','${t1}')"` : '';
+  const t2click = t2 ? `onclick="pickKO('${id}','${t2}')"` : '';
+  return `
+    <div class="ko-match">
+      <div class="ko-match-title">${label}</div>
+      <div class="ko-teams">
+        <div class="ko-team ${t1cls}" ${t1click}>${t1name}${t1?' ('+t1+')':''}</div>
+        <div class="ko-vs">VS</div>
+        <div class="ko-team ${t2cls}" ${t2click}>${t2name}${t2?' ('+t2+')':''}</div>
+      </div>
+    </div>`;
+}
+
+window.pickKO = function(matchId, teamId) {
+  if (R[matchId] === teamId) { delete R[matchId]; }
+  else { R[matchId] = teamId; }
+  save();
+  renderKnockout();
+};
+
+// ─── LEADERBOARD ────────────────────────────────────────
+function renderLeaderboard() {
+  const el = document.getElementById('lb-content');
+  const fin = R['FIN'], f3 = R['F3'];
+  const {t} = getKOTeams();
+
+  // Final placings
+  let p1,p2,p3,p4;
+  if (fin) {
+    p1 = fin;
+    p2 = fin === t['SF1W'] ? t['SF2W'] : t['SF1W'];
+  }
+  if (f3) {
+    p3 = f3;
+    p4 = f3 === t['SF1L'] ? t['SF2L'] : t['SF1L'];
+  }
+
+  // Group stage wins
+  const allPairs = ['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5'];
+  const wins = {};
+  allPairs.forEach(k => wins[k] = 0);
+  [...MATCHES.A, ...MATCHES.B].forEach(m => {
+    if (R[m.id]) wins[R[m.id]]++;
+  });
+  const winRanking = allPairs.sort((a,b) => wins[b]-wins[a]);
+
+  const podiumHTML = (p1 && p2) ? `
+    <div class="podium">
+      <div class="podium-block p2">
+        <span class="podium-medal">🥈</span>
+        <div class="podium-name">${PAIRS[p2]}</div>
+        <div class="podium-place">${p2} · Runner-Up</div>
+      </div>
+      <div class="podium-block p1">
+        <span class="podium-medal">🥇</span>
+        <div class="podium-name">${PAIRS[p1]}</div>
+        <div class="podium-place">${p1} · Champions</div>
+      </div>
+      <div class="podium-block p3">
+        <span class="podium-medal">${p3?'🥉':'?'}</span>
+        <div class="podium-name">${p3?PAIRS[p3]:'TBD'}</div>
+        <div class="podium-place">${p3?p3+' · 3rd Place':'3rd Place'}</div>
+      </div>
+    </div>
+    ${p4?`<p style="text-align:center;font-size:0.8rem;color:var(--muted);margin-bottom:20px">4th Place: <strong>${PAIRS[p4]}</strong> (${p4})</p>`:''}
+  ` : `<div class="lb-note">🏆 Complete the knockout stage to see the final standings.</div>`;
+
+  const winsTableHTML = `
+    <div style="margin-top:8px">
+      <div class="ko-label" style="margin-bottom:8px">Group Stage — Most Wins</div>
+      <table class="rm-table">
+        <thead><tr><th>#</th><th>Pair</th><th>Group</th><th>Wins</th></tr></thead>
+        <tbody>
+          ${winRanking.map((k,i) => `
+            <tr>
+              <td><span class="rank-chip ${i<3?'rank-q':'rank-n'}">${i+1}</span></td>
+              <td><strong>${PAIRS[k]}</strong></td>
+              <td><span style="font-size:0.72rem;color:var(--muted)">${k}</span></td>
+              <td><strong>${wins[k]}</strong></td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>`;
+
+  el.innerHTML = podiumHTML + winsTableHTML;
+}
+
+// ─── INIT ────────────────────────────────────────────────
+renderGroupMatches('A');
+renderGroupMatches('B');
+
+})();
+</script>
 
 </body>
 </html>
