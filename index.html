@@ -217,7 +217,7 @@
     <div class="chip dark">📍 Ranibag Pickleball Court</div>
     <div class="chip">📅 Thursday, 9 April 2026</div>
     <div class="chip">⏰ 7:00 PM – 10:00 PM</div>
-    <div class="chip">👥 18 Players</div>
+    <div class="chip">👥 16 Players</div>
     <div class="chip">🎾 2 Courts</div>
   </div>
 </div>
@@ -281,8 +281,8 @@
 
     <div class="team-card">
       <span class="pair-tag tag-b">B2 · Group B</span>
-      <div class="p-row"><div class="av av-a">AN</div><div class="p-name">Ayush Nerkar</div></div>
-      <div class="p-row"><div class="av">MR</div><div class="p-name">Manisha Rajendran</div></div>
+      <div class="p-row"><div class="av av-a">MR</div><div class="p-name">Manisha Rajendran</div></div>
+      <div class="p-row"><div class="av">AY</div><div class="p-name">Anushka Yewale</div></div>
     </div>
 
     <div class="team-card">
@@ -291,11 +291,6 @@
       <div class="p-row"><div class="av">DN</div><div class="p-name">Diksha Nair</div></div>
     </div>
 
-    <div class="team-card">
-      <span class="pair-tag tag-b">B4 · Group B</span>
-      <div class="p-row"><div class="av av-a">NA</div><div class="p-name">Nasir Ansari</div></div>
-      <div class="p-row"><div class="av">AY</div><div class="p-name">Anushka Yewale</div></div>
-    </div>
 
   </div>
 </section>
@@ -327,9 +322,8 @@
       </div>
       <div class="group-body">
         <div class="g-row"><span class="g-num">B1</span><div class="g-names">Tanmay Gaikwad <span class="amp">&</span> Jash Gohil</div></div>
-        <div class="g-row"><span class="g-num">B2</span><div class="g-names">Ayush Nerkar <span class="amp">&</span> Manisha Rajendran</div></div>
+        <div class="g-row"><span class="g-num">B2</span><div class="g-names">Manisha Rajendran <span class="amp">&</span> Anushka Yewale</div></div>
         <div class="g-row"><span class="g-num">B3</span><div class="g-names">Hardik Golchha <span class="amp">&</span> Diksha Nair</div></div>
-        <div class="g-row"><span class="g-num">B4</span><div class="g-names">Nasir Ansari <span class="amp">&</span> Anushka Yewale</div></div>
       </div>
     </div>
   </div>
@@ -362,12 +356,10 @@
     <div class="fix-box">
       <div class="fix-head"><h3>Group B Fixtures</h3><span class="fix-sub">Court 2 · First to 11</span></div>
       <div class="match-list">
-        <div class="match-row"><span class="m-num">M1</span><div class="m-teams">Tanmay &amp; Jash <span class="vs">vs</span> Ayush &amp; Manisha</div></div>
-        <div class="match-row"><span class="m-num">M2</span><div class="m-teams">Hardik &amp; Diksha <span class="vs">vs</span> Nasir &amp; Anushka</div></div>
-        <div class="match-row"><span class="m-num">M3</span><div class="m-teams">Tanmay &amp; Jash <span class="vs">vs</span> Hardik &amp; Diksha</div></div>
-        <div class="match-row"><span class="m-num">M4</span><div class="m-teams">Ayush &amp; Manisha <span class="vs">vs</span> Nasir &amp; Anushka</div></div>
-        <div class="match-row"><span class="m-num">M5</span><div class="m-teams">Tanmay &amp; Jash <span class="vs">vs</span> Nasir &amp; Anushka</div></div>
-        <div class="match-row"><span class="m-num">M6</span><div class="m-teams">Ayush &amp; Manisha <span class="vs">vs</span> Hardik &amp; Diksha</div></div>
+        <div class="match-row"><span class="m-num">M1</span><div class="m-teams">Tanmay &amp; Jash <span class="vs">vs</span> Manisha &amp; Anushka</div></div>
+        <div class="match-row"><span class="m-num">M2</span><div class="m-teams">Tanmay &amp; Jash <span class="vs">vs</span> Hardik &amp; Diksha</div></div>
+        <div class="match-row"><span class="m-num">M3</span><div class="m-teams">Manisha &amp; Anushka <span class="vs">vs</span> Hardik &amp; Diksha</div></div>
+      </div></div>
       </div></div>
       </div>
     </div>
@@ -653,8 +645,8 @@ const PAIRS = {
   A1: "Artham & Namita",   A2: "Malak & Akshay",
   A3: "Pranay & Shambhavi", A4: "Abhishek & Jamila",
   A5: "Aman & Khushi",
-  B1: "Tanmay & Jash",     B2: "Ayush & Manisha",
-  B3: "Hardik & Diksha",   B4: "Nasir & Anushka"
+  B1: "Tanmay & Jash",     B2: "Manisha & Anushka",
+  B3: "Hardik & Diksha"
 };
 
 const MATCHES = {
@@ -666,9 +658,9 @@ const MATCHES = {
     {id:"AM9",t1:"A1",t2:"A4"}, {id:"AM10",t1:"A2",t2:"A5"}
   ],
   B: [
-    {id:"BM1",t1:"B1",t2:"B2"}, {id:"BM2",t1:"B3",t2:"B4"},
-    {id:"BM3",t1:"B1",t2:"B3"}, {id:"BM4",t1:"B2",t2:"B4"},
-    {id:"BM5",t1:"B1",t2:"B4"}, {id:"BM6",t1:"B2",t2:"B3"}
+    {id:"BM1",t1:"B1",t2:"B2"},
+    {id:"BM2",t1:"B1",t2:"B3"},
+    {id:"BM3",t1:"B2",t2:"B3"}
   ]
 };
 
@@ -717,7 +709,7 @@ window.pickWinner = function(matchId, teamId, grp) {
 
 // ─── STANDINGS ──────────────────────────────────────────
 function calcStandings(grp) {
-  const keys = grp === 'A' ? ['A1','A2','A3','A4','A5'] : ['B1','B2','B3','B4'];
+  const keys = grp === 'A' ? ['A1','A2','A3','A4','A5'] : ['B1','B2','B3'];
   const s = {};
   keys.forEach(k => s[k] = {w:0, l:0, pts:0});
   MATCHES[grp].forEach(m => {
@@ -879,7 +871,7 @@ function renderLeaderboard() {
   }
 
   // Group stage wins
-  const allPairs = ['A1','A2','A3','A4','A5','B1','B2','B3','B4'];
+  const allPairs = ['A1','A2','A3','A4','A5','B1','B2','B3'];
   const wins = {};
   allPairs.forEach(k => wins[k] = 0);
   [...MATCHES.A, ...MATCHES.B].forEach(m => {
