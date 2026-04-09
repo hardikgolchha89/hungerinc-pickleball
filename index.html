@@ -343,6 +343,10 @@
         <div class="match-row"><span class="m-num">M4</span><div class="m-teams">Malak &amp; Akshay <span class="vs">vs</span> Abhishek &amp; Jamila</div></div>
         <div class="match-row"><span class="m-num">M5</span><div class="m-teams">Artham &amp; Namita <span class="vs">vs</span> Abhishek &amp; Jamila</div></div>
         <div class="match-row"><span class="m-num">M6</span><div class="m-teams">Malak &amp; Akshay <span class="vs">vs</span> Pranay &amp; Jash</div></div>
+        <div class="match-row" style="border-top:1px dashed var(--border);margin-top:6px;padding-top:6px"><span class="m-num">M7</span><div class="m-teams">Artham &amp; Namita <span class="vs">vs</span> Malak &amp; Akshay</div></div>
+        <div class="match-row"><span class="m-num">M8</span><div class="m-teams">Pranay &amp; Jash <span class="vs">vs</span> Abhishek &amp; Jamila</div></div>
+        <div class="match-row"><span class="m-num">M9</span><div class="m-teams">Artham &amp; Namita <span class="vs">vs</span> Pranay &amp; Jash</div></div>
+        <div class="match-row"><span class="m-num">M10</span><div class="m-teams">Malak &amp; Akshay <span class="vs">vs</span> Abhishek &amp; Jamila</div></div>
       </div>
     </div>
     <div class="fix-box">
@@ -354,6 +358,10 @@
         <div class="match-row"><span class="m-num">M4</span><div class="m-teams">Hardik &amp; Diksha <span class="vs">vs</span> Tanmay &amp; Ayush</div></div>
         <div class="match-row"><span class="m-num">M5</span><div class="m-teams">Manisha &amp; Anushka <span class="vs">vs</span> Tanmay &amp; Ayush</div></div>
         <div class="match-row"><span class="m-num">M6</span><div class="m-teams">Hardik &amp; Diksha <span class="vs">vs</span> Aman &amp; Khushi</div></div>
+        <div class="match-row" style="border-top:1px dashed var(--border);margin-top:6px;padding-top:6px"><span class="m-num">M7</span><div class="m-teams">Manisha &amp; Anushka <span class="vs">vs</span> Hardik &amp; Diksha</div></div>
+        <div class="match-row"><span class="m-num">M8</span><div class="m-teams">Aman &amp; Khushi <span class="vs">vs</span> Tanmay &amp; Ayush</div></div>
+        <div class="match-row"><span class="m-num">M9</span><div class="m-teams">Manisha &amp; Anushka <span class="vs">vs</span> Aman &amp; Khushi</div></div>
+        <div class="match-row"><span class="m-num">M10</span><div class="m-teams">Hardik &amp; Diksha <span class="vs">vs</span> Tanmay &amp; Ayush</div></div>
       </div></div>
       </div>
     </div>
@@ -646,12 +654,16 @@ const MATCHES = {
   A: [
     {id:"AM1",t1:"A1",t2:"A2"}, {id:"AM2",t1:"A3",t2:"A4"},
     {id:"AM3",t1:"A1",t2:"A3"}, {id:"AM4",t1:"A2",t2:"A4"},
-    {id:"AM5",t1:"A1",t2:"A4"}, {id:"AM6",t1:"A2",t2:"A3"}
+    {id:"AM5",t1:"A1",t2:"A4"}, {id:"AM6",t1:"A2",t2:"A3"},
+    {id:"AM7",t1:"A1",t2:"A2"}, {id:"AM8",t1:"A3",t2:"A4"},
+    {id:"AM9",t1:"A1",t2:"A3"}, {id:"AM10",t1:"A2",t2:"A4"}
   ],
   B: [
     {id:"BM1",t1:"B1",t2:"B2"}, {id:"BM2",t1:"B3",t2:"B4"},
     {id:"BM3",t1:"B1",t2:"B3"}, {id:"BM4",t1:"B2",t2:"B4"},
-    {id:"BM5",t1:"B1",t2:"B4"}, {id:"BM6",t1:"B2",t2:"B3"}
+    {id:"BM5",t1:"B1",t2:"B4"}, {id:"BM6",t1:"B2",t2:"B3"},
+    {id:"BM7",t1:"B1",t2:"B2"}, {id:"BM8",t1:"B3",t2:"B4"},
+    {id:"BM9",t1:"B1",t2:"B3"}, {id:"BM10",t1:"B2",t2:"B4"}
   ]
 };
 
@@ -733,7 +745,7 @@ function renderStandings() {
         </tbody>
       </table>
       <p style="font-size:0.72rem;color:var(--muted);margin-top:8px;text-align:right">
-        ${played}/6 matches played ${played===6?'✅':''}
+        ${played}/10 matches played ${played===10?'✅':''}
       </p>`;
   });
 }
@@ -751,7 +763,7 @@ function getKOTeams() {
   const bRows = calcStandings('B');
   const aPlayed = MATCHES['A'].filter(m => R[m.id]).length;
   const bPlayed = MATCHES['B'].filter(m => R[m.id]).length;
-  const ready = aPlayed === 6 && bPlayed === 6;
+  const ready = aPlayed === 10 && bPlayed === 10;
 
   const t = {};
   t['A1_id'] = ready ? aRows[0].id : null;
@@ -782,15 +794,15 @@ function renderKnockout() {
       <div class="ko-section">
         <div class="ko-label">Semi-Finals</div>
         <div class="ko-grid">
-          ${renderKOMatch({id:'SF1',label:'Semi-Final 1'}, null, null)}
-          ${renderKOMatch({id:'SF2',label:'Semi-Final 2'}, null, null)}
+          ${koMatchHTML('SF1','Semi-Final 1',null,null)}
+          ${koMatchHTML('SF2','Semi-Final 2',null,null)}
         </div>
       </div>
       <div class="ko-section">
         <div class="ko-label">Finals</div>
         <div class="ko-grid">
-          ${renderKOMatch({id:'F3',label:'3rd Place'}, null, null)}
-          ${renderKOMatch({id:'FIN',label:'🏆 Final'}, null, null)}
+          ${koMatchHTML('F3','3rd Place',null,null)}
+          ${koMatchHTML('FIN','🏆 Final',null,null)}
         </div>
       </div>`;
     return;
