@@ -347,6 +347,8 @@
         <div class="match-row"><span class="m-num">M8</span><div class="m-teams">Pranay &amp; Jash <span class="vs">vs</span> Abhishek &amp; Jamila</div></div>
         <div class="match-row"><span class="m-num">M9</span><div class="m-teams">Artham &amp; Namita <span class="vs">vs</span> Pranay &amp; Jash</div></div>
         <div class="match-row"><span class="m-num">M10</span><div class="m-teams">Malak &amp; Akshay <span class="vs">vs</span> Abhishek &amp; Jamila</div></div>
+        <div class="match-row"><span class="m-num">M11</span><div class="m-teams">Artham &amp; Namita <span class="vs">vs</span> Abhishek &amp; Jamila</div></div>
+        <div class="match-row"><span class="m-num">M12</span><div class="m-teams">Malak &amp; Akshay <span class="vs">vs</span> Pranay &amp; Jash</div></div>
       </div>
     </div>
     <div class="fix-box">
@@ -362,6 +364,8 @@
         <div class="match-row"><span class="m-num">M8</span><div class="m-teams">Aman &amp; Khushi <span class="vs">vs</span> Tanmay &amp; Ayush</div></div>
         <div class="match-row"><span class="m-num">M9</span><div class="m-teams">Manisha &amp; Anushka <span class="vs">vs</span> Aman &amp; Khushi</div></div>
         <div class="match-row"><span class="m-num">M10</span><div class="m-teams">Hardik &amp; Diksha <span class="vs">vs</span> Tanmay &amp; Ayush</div></div>
+        <div class="match-row"><span class="m-num">M11</span><div class="m-teams">Manisha &amp; Anushka <span class="vs">vs</span> Tanmay &amp; Ayush</div></div>
+        <div class="match-row"><span class="m-num">M12</span><div class="m-teams">Hardik &amp; Diksha <span class="vs">vs</span> Aman &amp; Khushi</div></div>
       </div></div>
       </div>
     </div>
@@ -669,14 +673,16 @@ const MATCHES = {
     {id:"AM3",t1:"A1",t2:"A3"}, {id:"AM4",t1:"A2",t2:"A4"},
     {id:"AM5",t1:"A1",t2:"A4"}, {id:"AM6",t1:"A2",t2:"A3"},
     {id:"AM7",t1:"A1",t2:"A2"}, {id:"AM8",t1:"A3",t2:"A4"},
-    {id:"AM9",t1:"A1",t2:"A3"}, {id:"AM10",t1:"A2",t2:"A4"}
+    {id:"AM9",t1:"A1",t2:"A3"}, {id:"AM10",t1:"A2",t2:"A4"},
+    {id:"AM11",t1:"A1",t2:"A4"}, {id:"AM12",t1:"A2",t2:"A3"}
   ],
   B: [
     {id:"BM1",t1:"B1",t2:"B2"}, {id:"BM2",t1:"B3",t2:"B4"},
     {id:"BM3",t1:"B1",t2:"B3"}, {id:"BM4",t1:"B2",t2:"B4"},
     {id:"BM5",t1:"B1",t2:"B4"}, {id:"BM6",t1:"B2",t2:"B3"},
     {id:"BM7",t1:"B1",t2:"B2"}, {id:"BM8",t1:"B3",t2:"B4"},
-    {id:"BM9",t1:"B1",t2:"B3"}, {id:"BM10",t1:"B2",t2:"B4"}
+    {id:"BM9",t1:"B1",t2:"B3"}, {id:"BM10",t1:"B2",t2:"B4"},
+    {id:"BM11",t1:"B1",t2:"B4"}, {id:"BM12",t1:"B2",t2:"B3"}
   ]
 };
 
@@ -758,7 +764,7 @@ function renderStandings() {
         </tbody>
       </table>
       <p style="font-size:0.72rem;color:var(--muted);margin-top:8px;text-align:right">
-        ${played}/10 matches played ${played===10?'✅':''}
+        ${played}/12 matches played ${played===12?'✅':''}
       </p>`;
   });
 }
@@ -838,8 +844,8 @@ function getKOTeams() {
   const bRows = calcStandings('B');
   const aPlayed = MATCHES['A'].filter(m => R[m.id]).length;
   const bPlayed = MATCHES['B'].filter(m => R[m.id]).length;
-  const aFinal = aPlayed === 10 ? resolveTie(aRows, 'A') : null;
-  const bFinal = bPlayed === 10 ? resolveTie(bRows, 'B') : null;
+  const aFinal = aPlayed === 12 ? resolveTie(aRows, 'A') : null;
+  const bFinal = bPlayed === 12 ? resolveTie(bRows, 'B') : null;
   const ready = aFinal !== null && bFinal !== null;
 
   const t = {};
@@ -879,7 +885,7 @@ function renderKnockout() {
   const bRows = calcStandings('B');
   const aPlayed = MATCHES['A'].filter(m => R[m.id]).length;
   const bPlayed = MATCHES['B'].filter(m => R[m.id]).length;
-  const aComplete = aPlayed === 10, bComplete = bPlayed === 10;
+  const aComplete = aPlayed === 12, bComplete = bPlayed === 12;
   const el = document.getElementById('ko-content');
 
   // Groups not done yet
