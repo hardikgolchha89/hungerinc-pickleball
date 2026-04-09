@@ -624,6 +624,19 @@
 .ko-team.ko-tbd { color: var(--muted); font-style: italic; cursor: default; font-size: 0.72rem; }
 .ko-vs { text-align: center; font-size: 0.65rem; color: var(--muted); font-weight: 600; }
 
+/* ── TIEBREAKER ── */
+.tie-notice {
+  background: #FFF8E7; border: 1.5px solid #C17A00;
+  border-radius: 6px; padding: 12px 16px; margin-bottom: 12px;
+  font-size: 0.82rem; color: #7A4A00;
+}
+.tie-box { border: 2px solid #C17A00; border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
+.tie-title {
+  background: #C17A00; color: white; padding: 6px 12px;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+  font-size: 0.75rem; letter-spacing: 1px;
+}
+
 /* ── LEADERBOARD ── */
 .podium { display: flex; align-items: flex-end; justify-content: center; gap: 12px; margin: 24px 0; }
 .podium-block {
@@ -750,68 +763,154 @@ function renderStandings() {
   });
 }
 
-// ─── KNOCKOUT ───────────────────────────────────────────
-const KO_MATCHES = [
-  {id:'SF1', label:'Semi-Final 1', t1key:'A1_id', t2key:'B2_id'},
-  {id:'SF2', label:'Semi-Final 2', t1key:'B1_id', t2key:'A2_id'},
-  {id:'F3',  label:'3rd Place',    t1key:'SF1L',  t2key:'SF2L'},
-  {id:'FIN', label:'🏆 Final',     t1key:'SF1W',  t2key:'SF2W'},
-];
+// ─── TIE DETECTION ──────────────────────────────────────
+function checkTie(rows) {
+  const p0 = rows[0].pts, p1 = rows[1].pts, p2 = rows[2].pts;
+  if (p0 === p1 && p1 === p2) return {type:'3way', teams:[rows[0].id, rows[1].id, rows[2].id]};
+  if (p0 === p1) return {type:'1v2', teams:[rows[0].id, rows[1].id]};
+  if (p1 === p2) return {type:'2v3', teams:[rows[1].id, rows[2].id]};
+  return null;
+}
 
+function resolveTie(rows, grp) {
+  const tie = checkTie(rows);
+  if (!tie) return [rows[0].id, rows[1].id];
+  const key1 = 'TIE' + grp + '_1', key2 = 'TIE' + grp + '_2';
+  if (tie.type === '1v2') {
+    const w = R[key1]; if (!w) return null;
+    return [w, w === tie.teams[0] ? tie.teams[1] : tie.teams[0]];
+  }
+  if (tie.type === '2v3') {
+    const w = R[key1]; if (!w) return null;
+    return [rows[0].id, w];
+  }
+  if (tie.type === '3way') {
+    const w1 = R[key1]; if (!w1) return null;
+    const l1 = w1 === tie.teams[0] ? tie.teams[1] : tie.teams[0];
+    const w2 = R[key2]; if (!w2) return null;
+    return [w1, w2];
+  }
+  return [rows[0].id, rows[1].id];
+}
+
+function tiebreakerMatchHTML(key, label, t1, t2) {
+  const w = R[key];
+  const t1cls = w === t1 ? 'winner' : w ? 'loser' : '';
+  const t2cls = w === t2 ? 'winner' : w ? 'loser' : '';
+  return `
+    <div class="tie-box">
+      <div class="tie-title">${label}</div>
+      <div class="ko-teams">
+        <div class="ko-team ${t1cls}" onclick="pickTie('${key}','${t1}')">${PAIRS[t1]}</div>
+        <div class="ko-vs">VS</div>
+        <div class="ko-team ${t2cls}" onclick="pickTie('${key}','${t2}')">${PAIRS[t2]}</div>
+      </div>
+    </div>`;
+}
+
+function renderTiebreakerSection(grp, tie, rows) {
+  const key1 = 'TIE' + grp + '_1', key2 = 'TIE' + grp + '_2';
+  const label = grp === 'A' ? 'Group A' : 'Group B';
+  let html = `<div class="tie-notice">⚖️ <strong>${label} Tiebreaker</strong> — standings are tied. Record the tiebreaker result before knockout begins.</div>`;
+  if (tie.type === '1v2') {
+    html += tiebreakerMatchHTML(key1, `${label} · 1st vs 2nd`, tie.teams[0], tie.teams[1]);
+  } else if (tie.type === '2v3') {
+    html += tiebreakerMatchHTML(key1, `${label} · 2nd vs 3rd (for knockout spot)`, tie.teams[0], tie.teams[1]);
+  } else if (tie.type === '3way') {
+    html += tiebreakerMatchHTML(key1, `${label} · Tiebreaker 1`, tie.teams[0], tie.teams[1]);
+    const w1 = R[key1];
+    if (w1) {
+      const l1 = w1 === tie.teams[0] ? tie.teams[1] : tie.teams[0];
+      html += tiebreakerMatchHTML(key2, `${label} · Tiebreaker 2 (for 2nd place)`, l1, tie.teams[2]);
+    }
+  }
+  return html;
+}
+
+window.pickTie = function(key, teamId) {
+  if (R[key] === teamId) { delete R[key]; } else { R[key] = teamId; }
+  save(); renderKnockout();
+};
+
+// ─── KNOCKOUT ───────────────────────────────────────────
 function getKOTeams() {
   const aRows = calcStandings('A');
   const bRows = calcStandings('B');
   const aPlayed = MATCHES['A'].filter(m => R[m.id]).length;
   const bPlayed = MATCHES['B'].filter(m => R[m.id]).length;
-  const ready = aPlayed === 10 && bPlayed === 10;
+  const aFinal = aPlayed === 10 ? resolveTie(aRows, 'A') : null;
+  const bFinal = bPlayed === 10 ? resolveTie(bRows, 'B') : null;
+  const ready = aFinal !== null && bFinal !== null;
 
   const t = {};
-  t['A1_id'] = ready ? aRows[0].id : null;
-  t['A2_id'] = ready ? aRows[1].id : null;
-  t['B1_id'] = ready ? bRows[0].id : null;
-  t['B2_id'] = ready ? bRows[1].id : null;
+  t['A1_id'] = ready ? aFinal[0] : null;
+  t['A2_id'] = ready ? aFinal[1] : null;
+  t['B1_id'] = ready ? bFinal[0] : null;
+  t['B2_id'] = ready ? bFinal[1] : null;
 
-  // SF results
-  const sf1w = R['SF1']; const sf1l = sf1w ? (sf1w === t['A1_id'] ? t['B2_id'] : t['A1_id']) : null;
-  const sf2w = R['SF2']; const sf2l = sf2w ? (sf2w === t['B1_id'] ? t['A2_id'] : t['B1_id']) : null;
+  const sf1w = R['SF1'];
+  const sf1l = sf1w ? (sf1w === t['A1_id'] ? t['B2_id'] : t['A1_id']) : null;
+  const sf2w = R['SF2'];
+  const sf2l = sf2w ? (sf2w === t['B1_id'] ? t['A2_id'] : t['B1_id']) : null;
   t['SF1W'] = sf1w; t['SF1L'] = sf1l;
   t['SF2W'] = sf2w; t['SF2L'] = sf2l;
 
   return {t, ready};
 }
 
+const ghostBracket = () => `
+  <div class="ko-section">
+    <div class="ko-label">Semi-Finals</div>
+    <div class="ko-grid">
+      ${koMatchHTML('SF1','Semi-Final 1',null,null)}
+      ${koMatchHTML('SF2','Semi-Final 2',null,null)}
+    </div>
+  </div>
+  <div class="ko-section">
+    <div class="ko-label">Finals</div>
+    <div class="ko-grid">
+      ${koMatchHTML('F3','3rd Place',null,null)}
+      ${koMatchHTML('FIN','🏆 Final',null,null)}
+    </div>
+  </div>`;
+
 function renderKnockout() {
-  const {t, ready} = getKOTeams();
+  const aRows = calcStandings('A');
+  const bRows = calcStandings('B');
+  const aPlayed = MATCHES['A'].filter(m => R[m.id]).length;
+  const bPlayed = MATCHES['B'].filter(m => R[m.id]).length;
+  const aComplete = aPlayed === 10, bComplete = bPlayed === 10;
   const el = document.getElementById('ko-content');
 
-  if (!ready) {
+  // Groups not done yet
+  if (!aComplete || !bComplete) {
     el.innerHTML = `
       <div class="ko-section">
         <p style="color:var(--muted);font-size:0.85rem;padding:20px;text-align:center">
           ⏳ Complete all group stage matches first to unlock the knockout bracket.
         </p>
-      </div>
-      <div class="ko-section">
-        <div class="ko-label">Semi-Finals</div>
-        <div class="ko-grid">
-          ${koMatchHTML('SF1','Semi-Final 1',null,null)}
-          ${koMatchHTML('SF2','Semi-Final 2',null,null)}
-        </div>
-      </div>
-      <div class="ko-section">
-        <div class="ko-label">Finals</div>
-        <div class="ko-grid">
-          ${koMatchHTML('F3','3rd Place',null,null)}
-          ${koMatchHTML('FIN','🏆 Final',null,null)}
-        </div>
-      </div>`;
+      </div>${ghostBracket()}`;
     return;
   }
 
-  const sf1t1 = t['A1_id'], sf1t2 = t['B2_id'];
-  const sf2t1 = t['B1_id'], sf2t2 = t['A2_id'];
-  const f3t1 = t['SF1L'], f3t2 = t['SF2L'];
-  const fint1 = t['SF1W'], fint2 = t['SF2W'];
+  // Check tiebreakers
+  const aTie = checkTie(aRows), bTie = checkTie(bRows);
+  const aFinal = resolveTie(aRows, 'A'), bFinal = resolveTie(bRows, 'B');
+
+  if (aFinal === null || bFinal === null) {
+    let tieHTML = '<div class="ko-section">';
+    if (aFinal === null) tieHTML += renderTiebreakerSection('A', aTie, aRows);
+    if (bFinal === null) tieHTML += renderTiebreakerSection('B', bTie, bRows);
+    tieHTML += '</div>';
+    el.innerHTML = tieHTML + ghostBracket();
+    return;
+  }
+
+  // All clear — show bracket
+  const sf1t1 = aFinal[0], sf1t2 = bFinal[1];
+  const sf2t1 = bFinal[0], sf2t2 = aFinal[1];
+  const sf1w = R['SF1'], sf1l = sf1w ? (sf1w===sf1t1 ? sf1t2 : sf1t1) : null;
+  const sf2w = R['SF2'], sf2l = sf2w ? (sf2w===sf2t1 ? sf2t2 : sf2t1) : null;
 
   el.innerHTML = `
     <div class="ko-section">
@@ -824,8 +923,8 @@ function renderKnockout() {
     <div class="ko-section">
       <div class="ko-label">Finals (First to 15)</div>
       <div class="ko-grid">
-        ${koMatchHTML('F3','3rd Place',f3t1,f3t2)}
-        ${koMatchHTML('FIN','🏆 Final',fint1,fint2)}
+        ${koMatchHTML('F3','3rd Place',sf1l,sf2l)}
+        ${koMatchHTML('FIN','🏆 Final',sf1w,sf2w)}
       </div>
     </div>`;
 }
@@ -874,7 +973,7 @@ function renderLeaderboard() {
   }
 
   // Group stage wins
-  const allPairs = ['A1','A2','A3','A4','B1','B2','B3'];
+  const allPairs = ['A1','A2','A3','A4','B1','B2','B3','B4'];
   const wins = {};
   allPairs.forEach(k => wins[k] = 0);
   [...MATCHES.A, ...MATCHES.B].forEach(m => {
